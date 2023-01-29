@@ -1,0 +1,25 @@
+package ${package}.entity.vo;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import ${package}.entity.${className};
+import lombok.*;
+
+/**
+ * Module: ${className}.java
+ * ${className}的视图类
+ * @author ${author}
+ */
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class ${className}VO extends ${className} {
+
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * 唯一标识，视图覆盖实体id，解决js数值类型对于长整型精度丢失问题
+     */
+    @JsonSerialize(using = ToStringSerializer.class)
+    private Long id;
+
+}

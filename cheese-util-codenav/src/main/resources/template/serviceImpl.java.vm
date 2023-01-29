@@ -1,0 +1,51 @@
+package ${package}.service.impl;
+
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import ${package}.entity.${className};
+import ${package}.entity.dto.${className}DTO;
+import ${package}.service.I${className}Service;
+import ${package}.mapper.${className}Mapper;
+import com.cheese.core.tool.util.BeanUtil;
+import com.cheese.core.tool.util.Func;
+import com.cheese.core.tool.util.Assert;
+import org.springframework.stereotype.Service;
+
+import java.util.Collections;
+import java.util.List;
+
+/**
+ * ${className}.java
+ * ${comments} 业务接口实现
+ * @author ${author}
+ */
+@Service("${classname}Service")
+public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${className}> implements I${className}Service {
+
+    @Override
+    public List<${className}> selectList(${className}DTO ${classname}DTO) {
+        //TODO:根据实际条件修改
+        LambdaQueryWrapper<${className}> wrapper = Wrappers.lambdaQuery(BeanUtil.copy(${classname}DTO,${className}.class));
+        List<${className}> entityList = this.baseMapper.selectList(wrapper);
+        if (Func.isEmpty(entityList)) {
+            return Collections.emptyList();
+        }
+        return entityList;
+    }
+
+    @Override
+    public IPage<${className}> selectPage(IPage<${className}> page,${className}DTO ${classname}DTO) {
+        LambdaQueryWrapper<${className}> wrapper = Wrappers.lambdaQuery(BeanUtil.copy(${classname}DTO,${className}.class));
+        IPage<${className}> entityPage = this.baseMapper.selectPage(page, wrapper);
+        return entityPage;
+    }
+
+    @Override
+    public ${className} selectById(Long id) {
+        ${className} entity = this.getById(id);
+        Assert.notNull(entity, "不存在的${comments}id!");
+        return entity;
+    }
+}

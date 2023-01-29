@@ -1,0 +1,24 @@
+package ${package}.wrapper;
+
+import com.cheese.core.tool.util.BeanUtil;
+import com.cheese.core.base.wrapper.BaseEntityWrapper;
+import ${package}.entity.${className};
+import ${package}.entity.vo.${className}VO;
+
+/**
+ * 资料中心实体转视图
+ *
+ * @author sobann
+ */
+public class ${className}Wrapper extends BaseEntityWrapper<${className}, ${className}VO> {
+
+    public static ${className}Wrapper build() {
+        return new ${className}Wrapper();
+    }
+
+    @Override
+    public ${className}VO entityVO(${className} entity) {
+        ${className}VO vo = BeanUtil.copy(entity,${className}VO.class);
+        return vo;
+    }
+}

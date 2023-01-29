@@ -1,0 +1,104 @@
+package ${package}.controller;
+
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.api.R;
+import com.cheese.core.base.domain.Query;
+import com.cheese.core.tool.util.BeanUtil;
+import com.cheese.core.common.Condition ;
+import ${package}.entity.${className};
+import ${package}.entity.dto.${className}DTO;
+import ${package}.entity.vo.${className}VO;
+import ${package}.service.I${className}Service;
+import ${package}.wrapper.${className}Wrapper;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+/**
+ * Module: ${className}.java
+ * ${comments} 前端控制器
+ * @author ${author}
+ */
+@Api(tags = "${comments} 前端控制器")
+@RestController
+public class ${className}Controller {
+    @Autowired
+    private I${className}Service ${classname}Service;
+
+    /**
+     * ${comments}-获取全部数据
+     *
+     * @return
+     */
+    @ApiOperation("${comments}-获取全部数据")
+    @GetMapping("/${classname}/list")
+    public R<List<${className}VO>> list() {
+        List<${className}> entityList = ${classname}Service.list();
+        return R.ok(${className}Wrapper.build().listVO(entityList));
+    }
+
+    /**
+    * ${comments}-列表查询
+    *
+    * @param ${classname}DTO
+    * @return
+    */
+    @ApiOperation("${comments}-列表查询")
+    @PostMapping("/${classname}/list/query")
+    public R<List<${className}VO>> list(@RequestBody ${className}DTO ${classname}DTO) {
+        List<${className}> entityList = ${classname}Service.selectList(${classname}DTO);
+        return R.ok(${className}Wrapper.build().listVO(entityList));
+    }
+
+    /**
+    * ${comments}-分页查询
+    *
+    * @param ${classname}DTO
+    * @return
+    */
+    @ApiOperation("${comments}-分页查询")
+    @PostMapping("/${classname}/page/query")
+    public R<IPage<${className}VO>> page(@RequestBody ${className}DTO ${classname}DTO, Query query) {
+        IPage<${className}> entityPage = ${classname}Service.selectPage(Condition.getPage(query),${classname}DTO);
+        return R.ok(${className}Wrapper.build().pageVO(entityPage));
+    }
+
+    /**
+    * ${comments}-根据id获取
+    *
+    * @param id
+    * @return
+    */
+    @ApiOperation("${comments}-根据id获取")
+    @GetMapping("/${classname}/{id}/get")
+    public R<${className}VO> getById(@PathVariable("id") Long id) {
+        ${className} entity = ${classname}Service.selectById(id);
+        return R.ok(${className}Wrapper.build().entityVO(entity));
+    }
+
+    /**
+    * ${comments}-新增或修改
+    *
+    * @param ${classname}DTO
+    * @return
+    */
+    @ApiOperation("${comments}-新增或修改")
+    @PutMapping("/${classname}/addOrUpdate")
+    public R<Boolean> addOrUpdate(@RequestBody ${className}DTO ${classname}DTO) {
+        return R.ok(${classname}Service.saveOrUpdate(BeanUtil.copy(${classname}DTO, ${className}.class)));
+    }
+
+    /**
+    * ${comments}-根据id逻辑删除
+    *
+    * @param id
+    * @return
+    */
+    @ApiOperation("${comments}-根据id逻辑删除")
+    @DeleteMapping("/${classname}/{id}/del")
+    public R<Boolean> logicDel(@PathVariable("id") Long id) {
+        return R.ok(${classname}Service.removeById(id));
+    }
+}

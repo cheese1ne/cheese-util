@@ -1,0 +1,41 @@
+package ${package}.service;
+
+import ${package}.entity.${className};
+import ${package}.entity.dto.${className}DTO;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+
+import java.util.List;
+
+/**
+ * ${className}.java
+ * ${comments} 业务接口
+ * @author ${author}
+ */
+public interface I${className}Service extends IService<${className}> {
+
+
+    /**
+     * 列表查询
+     * @param ${classname}DTO
+     * @return
+     */
+    List<${className}> selectList(${className}DTO ${classname}DTO);
+
+
+    /**
+     * 自定义分页查询
+     * @param ${classname}DTO
+     * @param page
+     * @return
+     */
+    IPage<${className}> selectPage(IPage<${className}> page,${className}DTO ${classname}DTO);
+
+
+    /**
+     * 根据id获取视图
+     * @param id
+     * @return
+     */
+    ${className} selectById(Long id);
+}

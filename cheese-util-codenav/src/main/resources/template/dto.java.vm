@@ -1,0 +1,17 @@
+package ${package}.entity.dto;
+
+import ${package}.entity.${className};
+import lombok.*;
+
+/**
+ * Module: ${className}.java
+ * ${className}的数据传输类
+ * @author ${author}
+ */
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class ${className}DTO extends ${className} {
+
+    private static final long serialVersionUID = 1L;
+
+}

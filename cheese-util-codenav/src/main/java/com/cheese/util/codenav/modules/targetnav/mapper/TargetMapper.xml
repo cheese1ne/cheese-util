@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheese.util.codenav.modules.targetnav.mapper.TargetMapper">
+
+
+    <select id="queryTable" resultType="map">
+        select table_name tableName, engine, table_comment tableComment, create_time createTime from information_schema.tables  where table_schema = (SELECT DATABASE()) and table_name = #{tableName}
+    </select>
+
+    <select id="queryColumns" resultType="map">
+        select column_name columnName, data_type dataType, column_comment columnComment, column_key columnKey, extra from information_schema.columns  where table_name =#{tableName} and table_schema = (SELECT DATABASE())  order by ordinal_position
+    </select>
+
+    <select id="queryAllTable" resultType="string">
+        select table_name tableName from information_schema.tables  where table_schema = (SELECT DATABASE())
+    </select>
+
+    <select id="selectTableList" resultType="map">
+        select * from information_schema.tables  where table_schema = (SELECT DATABASE())
+    </select>
+
+    <select id="queryPage" resultType="com.cheese.util.codenav.modules.targetnav.entity.TableInfo">
+        select * from information_schema.tables  where table_schema = (SELECT DATABASE())
+    </select>
+
+    <select id="queryTable2DTO" resultType="com.cheese.util.codenav.modules.targetnav.entity.dto.TableInfoDTO">
+        SELECT
+            table_name AS tableName,
+            table_comment AS tableComment
+        FROM information_schema.tables
+        WHERE table_schema = (SELECT DATABASE()) AND table_name = #{tableName}
+    </select>
+
+    <select id="queryColumns2DTO" resultType="com.cheese.util.codenav.modules.targetnav.entity.dto.ColumnInfoDTO">
+        SELECT
+            column_name AS columnName,
+            data_type AS dataType,
+            column_comment AS columnComment,
+            column_key AS columnKey,
+            extra AS extra
+        FROM information_schema.columns
+        WHERE table_name =#{tableName} AND table_schema = (SELECT DATABASE())
+        ORDER BY ordinal_position
+    </select>
+</mapper>

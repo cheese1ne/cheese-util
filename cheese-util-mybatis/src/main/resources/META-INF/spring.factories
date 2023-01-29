@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+    com.cheese.util.mybatis.plugin.config.BatchAutoConfiguration
