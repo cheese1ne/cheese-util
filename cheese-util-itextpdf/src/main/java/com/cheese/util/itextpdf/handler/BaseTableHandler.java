@@ -85,8 +85,6 @@ public abstract class BaseTableHandler<T> extends CommonPropSupport implements I
         this.assembleData(param);
         Document document = new Document(PageSize.A4.rotate());
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        //通过获取的数据对PropertyEntity中占位符赋值
-        this.resolverProperty();
         try {
             PdfWriter.getInstance(document, baos);
             document.open();
@@ -186,12 +184,20 @@ public abstract class BaseTableHandler<T> extends CommonPropSupport implements I
         Paragraph title = new Paragraph();
         Font _FONT = FontFactory.getFont(fontPath, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED, 10f, Font.BOLD, BaseColor.BLACK);
         _FONT.setSize(14);
-        Chunk chunkL = new Chunk(modelEntity.getTitle(), _FONT);
+
+        String titleName = modelEntity.getTitle();
+        String titleNameVal = resolver.resolvePlaceholder(titleName, headData);
+
+        Chunk chunkL = new Chunk(titleNameVal, _FONT);
         title.add(chunkL);
 
         Font _FONT2 = FontFactory.getFont(fontPath, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED, 10f, Font.BOLD, BaseColor.BLACK);
         _FONT2.setSize(10);
-        Chunk chunkR = new Chunk(modelEntity.getSubTitle(), _FONT2);
+
+        String subTitleName = modelEntity.getSubTitle();
+        String subTitleNameVal = resolver.resolvePlaceholder(subTitleName, headData);
+
+        Chunk chunkR = new Chunk(subTitleNameVal, _FONT2);
         title.add(chunkR);
 
         title.setAlignment(Element.ALIGN_CENTER);
@@ -218,7 +224,9 @@ public abstract class BaseTableHandler<T> extends CommonPropSupport implements I
         headTable.setWidthPercentage(100);
         headTable.setTotalWidth(modelEntity.getWidthArr());
         for (PropertyEntity propertyEntity : headList) {
-            PdfPCell cell = PdfUtil.createMergeCell(propertyEntity.getName(), _FONT, propertyEntity.getRowSpan(), propertyEntity.getColSpan(),
+            String name = propertyEntity.getName();
+            String val = resolver.resolvePlaceholder(name, headData);
+            PdfPCell cell = PdfUtil.createMergeCell(val, _FONT, propertyEntity.getRowSpan(), propertyEntity.getColSpan(),
                     12 * propertyEntity.getRowSpan(), 0.05f, Rectangle.TOP + Rectangle.LEFT);
             cell.setHorizontalAlignment(propertyEntity.getAlign());
             cell.setBorder(propertyEntity.getBorder());
@@ -269,39 +277,15 @@ public abstract class BaseTableHandler<T> extends CommonPropSupport implements I
         footTable.setTotalWidth(modelEntity.getWidthArr());
         // 循环生成头信息
         for (PropertyEntity propertyEntity : footList) {
-            PdfPCell cell = PdfUtil.createMergeCell(propertyEntity.getName(), _FONT, propertyEntity.getRowSpan(), propertyEntity.getColSpan(),
+            String name = propertyEntity.getName();
+            String val = resolver.resolvePlaceholder(name, footData);
+            PdfPCell cell = PdfUtil.createMergeCell(val, _FONT, propertyEntity.getRowSpan(), propertyEntity.getColSpan(),
                     12 * propertyEntity.getRowSpan(), 0.05f, Rectangle.TOP + Rectangle.LEFT);
             cell.setHorizontalAlignment(propertyEntity.getAlign());
             cell.setBorder(propertyEntity.getBorder());
             footTable.addCell(cell);
         }
         document.add(footTable);
-    }
-
-    /**
-     * 属性占位符解析替换
-     */
-    private void resolverProperty() {
-        //title的占位符存在headData中
-        this.resolverModelTitle(modelEntity, headData);
-        this.resolverPropertyName(headList, headData);
-        this.resolverPropertyName(footList, footData);
-    }
-
-    //替换表头的占位符
-    private void resolverModelTitle(ModelEntity modelEntity, Map<String, Object> data) {
-        String title = resolver.resolvePlaceholder(modelEntity.getTitle(), data);
-        String subTitle = resolver.resolvePlaceholder(modelEntity.getSubTitle(), data);
-        modelEntity.setTitle(title);
-        modelEntity.setSubTitle(subTitle);
-    }
-
-    //替换表格中的名称
-    private void resolverPropertyName(List<PropertyEntity> entityList, Map<String, Object> data) {
-        for (PropertyEntity property : entityList) {
-            String newName = resolver.resolvePlaceholder(property.getName(), data);
-            property.setName(newName);
-        }
     }
 
     //补足空行，系数为0.75
